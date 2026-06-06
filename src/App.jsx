@@ -12,6 +12,7 @@ const INITIAL_SUBJECTS = [
 function App() {
   const [subjects, setSubjects] = useState(INITIAL_SUBJECTS);
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [currentPage, setCurrentPage] = useState("landing");
 
   // Attendance updating logic
   const handleLogAttendance = (id, attendedIncrement, totalIncrement) => {
@@ -31,6 +32,35 @@ function App() {
 
   // Criteria warning setup (75% standard college rule)
   const criteriaStatus = overallPercentage >= 75 ? 'Safe' : 'Shortage';
+  if (currentPage === "landing") {
+  return (
+    <div className="landing-page">
+      <div className="hero-card">
+
+        <h1>🎓 Attendance Guardian AI</h1>
+
+        <p className="hero-tagline">
+          Never worry about the 75% attendance rule again.
+        </p>
+
+        <div className="feature-list">
+          <p>✅ Live Attendance Tracking</p>
+          <p>✅ Smart Bunk Planner</p>
+          <p>✅ Attendance Prediction</p>
+          <p>✅ AI Attendance Assistant</p>
+        </div>
+
+        <button
+          className="launch-btn"
+          onClick={() => setCurrentPage("dashboard")}
+        >
+          Launch Dashboard 🚀
+        </button>
+
+      </div>
+    </div>
+  );
+}
 
   return (
     <div className="app-layout">
