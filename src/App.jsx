@@ -11,276 +11,203 @@ const INITIAL_SUBJECTS = [
 
 function App() {
   const [subjects, setSubjects] = useState(INITIAL_SUBJECTS);
-  const [activeTab, setActiveTab] = useState('dashboard');
-  const [currentPage, setCurrentPage] = useState("landing");
+  const [currentPage, setCurrentPage] = useState('landing'); // 'landing' or 'dashboard'
 
-  // Attendance updating logic
   const handleLogAttendance = (id, attendedIncrement, totalIncrement) => {
     setSubjects(prevSubjects =>
       prevSubjects.map(sub =>
         sub.id === id
-          ? { ...sub, attended: sub.attended + attendedIncrement, total: sub.total + totalIncrement }
+          ? { ...sub, attended: Math.max(0, sub.attended + attendedIncrement), total: Math.max(0, sub.total + totalIncrement) }
           : sub
       )
     );
   };
 
-  // Overall analytics calculation
+  const handleResetMatrix = () => {
+    setSubjects(INITIAL_SUBJECTS);
+  };
+
+  // Matrix Aggregate Calculations
   const totalAttended = subjects.reduce((sum, s) => sum + s.attended, 0);
   const totalClasses = subjects.reduce((sum, s) => sum + s.total, 0);
   const overallPercentage = totalClasses > 0 ? ((totalAttended / totalClasses) * 100).toFixed(1) : 0;
+  const isSafe = overallPercentage >= 75;
 
-  // Criteria warning setup (75% standard college rule)
-  const criteriaStatus = overallPercentage >= 75 ? 'Safe' : 'Shortage';
-  if (currentPage === "landing") {
-  return (
-    <div className="landing-page">
+  const totalBunksAvailable = subjects.reduce((sum, sub) => {
+    const safeBunks = Math.floor((sub.attended - (0.75 * sub.total)) / 0.75);
+    return sum + (safeBunks > 0 ? safeBunks : 0);
+  }, 0);
 
-      <div className="floating-glow glow-1"></div>
-      <div className="floating-glow glow-2"></div>
+  // Dynamic Agent Advice Stream
+  const getAgentStatus = () => {
+    if (!isSafe) return { color: '#ff4757', status: 'CRITICAL', text: 'Threshold breached. Freeze absences immediately.' };
+    if (totalBunksAvailable === 0) return { color: '#ffa502', status: 'WARNING', text: 'Holding at exact 75% parity. No margin remaining.' };
+    return { color: '#00d2ff', status: 'OPTIMAL', text: `Ecosystem stable. Localized buffer supports ${totalBunksAvailable} planned leaves.` };
+  };
 
-      <div className="hero-container">
+  const agent = getAgentStatus();
 
-        <div className="hero-left">
+  // ================= SCREEN 1: PRESERVED LANDING UI =================
+  if (currentPage === 'landing') {
+    return (
+      <div className="landing-screen">
+        <div className="grid-overlay"></div>
+        <div className="floating-glow glow-1"></div>
+        <div className="floating-glow glow-2"></div>
 
-          <span className="badge">
-            ⚡ AI Powered Attendance Agent
-          </span>
-
-          <h1>
-            ATTENDANCE
-            <br />
-            GUARDIAN AI
-          </h1>
-
-          <p className="hero-subtitle">
-            Track. Predict. Stay Safe.
-          </p>
-
-          <p className="hero-description">
-            An intelligent attendance companion that tracks
-            lectures, predicts shortages, calculates safe bunks,
-            and keeps you above the 75% eligibility threshold.
-          </p>
-
-          <button
-            className="launch-btn"
-            onClick={() => setCurrentPage("dashboard")}
-          >
-            🚀 Launch Mission
-          </button>
-
-        </div>
-
-        <div className="hero-right">
-
-          <div className="bot-card">
-
-            <div className="bot-avatar">
-              🤖
-            </div>
-
-            <h2>AttenBot</h2>
-
-            <p>
-              Welcome Engineer.
+        <div className="hero-container">
+          <div className="hero-left">
+            <span className="badge">
+              <span className="pulse-dot"></span> AI-Powered Attendance Core v2.0
+            </span>
+            <h1>
+              ATTENDANCE <br />
+              <span className="gradient-text">GUARDIAN AI</span>
+            </h1>
+            <p className="hero-subtitle">Optimize the Art of the Bunk.</p>
+            <p className="hero-description">
+              An advanced technical tracking core designed for engineering students. 
+              Run computational simulations on your schedule, manage your threshold margins, 
+              and calculate precisely when to skip lectures without dropping under 75%.
             </p>
+            <button className="launch-btn" onClick={() => setCurrentPage('dashboard')}>
+              <span>Initialize Terminal Console ⚡</span>
+            </button>
+          </div>
 
-            <div className="bot-message">
-              "Your attendance is currently stable.
-              I will help you stay above the danger zone."
+          <div className="hero-right">
+            <div className="holo-matrix-deck">
+              <div className="matrix-scanner"></div>
+              <div className="hud-header">
+                <span className="hud-title">SYSTEM STATUS</span>
+                <span className="hud-ping">SYS_OK // 200</span>
+              </div>
+              <div className="radial-progress-widget">
+                <div className="outer-glow-ring">
+                  <div className="inner-percentage-text">{overallPercentage}%</div>
+                </div>
+              </div>
+              <div className="terminal-log-stream">
+                <div className="log-line"> Connecting to B.Tech V-Sem database...</div>
+                <div className="log-line"> Analytical calculation models: ACTIVE</div>
+                <div className="log-line cyan"> Current Target Status: [{isSafe ? 'SAFE' : 'SHORTAGE'}]</div>
+              </div>
             </div>
-
           </div>
-
         </div>
 
+        <div className="feature-grid">
+          <div className="feature-card">
+            <div className="card-accent-line"></div>
+            <h3>📊 Predictive Metrics</h3>
+            <p>Real-time threshold calculations showing you down-to-the-lecture safety statuses.</p>
+          </div>
+          <div className="feature-card">
+            <div className="card-accent-line"></div>
+            <h3>🎯 Strategic Bunk Planner</h3>
+            <p>Simulate future skips before they happen to preview your exam eligibility margin.</p>
+          </div>
+          <div className="feature-card">
+            <div className="card-accent-line"></div>
+            <h3>🤖 Self-Correcting Core</h3>
+            <p>Monitors standard 75% regulations and instantly triggers safety status warnings.</p>
+          </div>
+        </div>
       </div>
+    );
+  }
 
-      <div className="feature-grid">
-
-        <div className="feature-card">
-          <h3>📊 Analytics</h3>
-          <p>
-            Real-time attendance monitoring and insights.
-          </p>
-        </div>
-
-        <div className="feature-card">
-          <h3>🎯 Bunk Planner</h3>
-          <p>
-            Know exactly how many classes you can skip safely.
-          </p>
-        </div>
-
-        <div className="feature-card">
-          <h3>🤖 AI Predictions</h3>
-          <p>
-            Detect attendance shortages before they happen.
-          </p>
-        </div>
-
-      </div>
-
-    </div>
-  );
-}
+  // ================= SCREEN 2: HIGHLY CLEAN & SIMPLE DASHBOARD =================
   return (
-    <div className="app-layout">
-      {/* Sidebar Section */}
-      <aside className="app-sidebar">
-        <div className="brand-header">
-          <div className="brand-logo">🎓</div>
-          <div className="brand-details">
-            <h2>B.Tech Portal</h2>
-            <span>Semester V</span>
-          </div>
-        </div>
+    <div className="dashboard-screen">
+      <div className="minimal-dash-wrapper">
         
-        <nav className="sidebar-navigation">
-          <button 
-            className={`menu-link ${activeTab === 'dashboard' ? 'active' : ''}`}
-            onClick={() => setActiveTab('dashboard')}
-          >
-            📊 Internal Analytics
-          </button>
-          <button 
-            className={`menu-link ${activeTab === 'timetable' ? 'active' : ''}`}
-            onClick={() => setActiveTab('timetable')}
-          >
-            📅 Class Timetable
-          </button>
-        </nav>
-
-        <div className="profile-widget">
-          <div className="avatar">🧑‍💻</div>
-          <div className="profile-info">
-            <h4>Student Account</h4>
-            <p>Connected to Database</p>
+        {/* Compact Navigation Header */}
+        <header className="dash-header">
+          <div className="dash-brand" onClick={() => setCurrentPage('landing')}>
+            <span className="back-arrow">←</span>
+            <h2>GUARDIAN // CORE</h2>
           </div>
-        </div>
-      </aside>
-
-      {/* Main Panel */}
-      <main className="main-viewport">
-        <header className="viewport-header">
-          <div>
-            <h1>Academic Attendance Terminal</h1>
-            <p className="subtitle">Real-time percentage monitor & class tracker</p>
-          </div>
-          <div className="live-date">
-            {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })}
+          <div className="dash-quick-stats">
+            <div className="quick-stat-item">
+              <span className="stat-label">TOTAL RATIO</span>
+              <span className="stat-val" style={{ color: isSafe ? '#00d2ff' : '#ff4757' }}>{overallPercentage}%</span>
+            </div>
+            <div className="quick-stat-item">
+              <span className="stat-label">GLOBAL BUFFER</span>
+              <span className="stat-val neon-green-text">{totalBunksAvailable} Classes</span>
+            </div>
           </div>
         </header>
 
-        {activeTab === 'dashboard' && (
-          <div className="view-wrapper">
-            {/* College Specific Stats Summary */}
-            <section className="analytics-banner">
-              <div className="metric-panel primary-metric">
-                <div className="metric-text">
-                  <h3>Overall Attendance</h3>
-                  <p className="huge-number">{overallPercentage}%</p>
-                  <span className="metric-subtext">{totalAttended} / {totalClasses} Total Lectures</span>
-                </div>
-                <div className="percentage-bar-wrapper">
-                  <div className="percentage-fill" style={{ width: `${overallPercentage}%` }}></div>
-                </div>
-              </div>
+        {/* Simplified AI Agent Top Control Header */}
+        <section className="agent-strip" style={{ borderColor: `${agent.color}30` }}>
+          <div className="agent-status-indicator" style={{ backgroundColor: agent.color }}></div>
+          <div className="agent-body">
+            <p className="agent-meta-tag"><strong style={{ color: agent.color }}>AGENT // {agent.status}</strong></p>
+            <p className="agent-advice-text">"{agent.text}"</p>
+          </div>
+          <button className="reset-matrix-btn" onClick={handleResetMatrix}>
+            RESET DATALINK
+          </button>
+        </section>
 
-              <div className={`metric-panel status-metric ${criteriaStatus.toLowerCase()}`}>
-                <h3>75% Eligibility Rule</h3>
-                <p className="status-text">{criteriaStatus}</p>
-                <span className="metric-subtext">
-                  {criteriaStatus === 'Safe' 
-                    ? 'You are clear for internal exams.' 
-                    : 'Action required! Attend next classes.'}
-                </span>
-              </div>
-            </section>
+        {/* Streamlined Horizontal Tracking Lists */}
+        <main className="subject-strip-deck">
+          {subjects.map((subject) => {
+            const percentage = subject.total > 0 ? ((subject.attended / subject.total) * 100).toFixed(0) : 0;
+            const isDeficit = percentage < 75;
+            const accent = isDeficit ? '#ff4757' : '#2ed573';
 
-            {/* Course List & Simulation Deck */}
-            <div className="grid-workspace">
-              <div className="course-card-list">
-                <h2>Subject Wise Breakdown</h2>
+            const allowableBunks = Math.floor((subject.attended - (0.75 * subject.total)) / 0.75);
+            const neededPatches = Math.ceil(((0.75 * subject.total) - subject.attended) / 0.25);
+
+            return (
+              <div key={subject.id} className="subject-minimal-strip">
                 
-                <div className="subject-stack">
-                  {subjects.map((subject) => {
-                    const subPercent = subject.total > 0 ? ((subject.attended / subject.total) * 100).toFixed(0) : 0;
-                    const isShortage = subPercent < 75;
-
-                    return (
-                      <div key={subject.id} className="subject-row">
-                        <div className="subject-meta">
-                          <span className="course-code">{subject.code}</span>
-                          <h4>{subject.name}</h4>
-                        </div>
-
-                        <div className="subject-progress">
-                          <span className="lecture-count">{subject.attended}/{subject.total} Classes</span>
-                          <div className="mini-progress-track">
-                            <div 
-                              className={`mini-progress-fill ${isShortage ? 'low' : 'good'}`} 
-                              style={{ width: `${subPercent}%` }}
-                            ></div>
-                          </div>
-                          <span className={`percentage-badge ${isShortage ? 'danger' : 'success'}`}>
-                            {subPercent}%
-                          </span>
-                        </div>
-
-                        {/* Interactive testing clickers for simulator use */}
-                        <div className="quick-actions-cell">
-                          <button 
-                            className="btn-mark present" 
-                            title="Log Attended Class"
-                            onClick={() => handleLogAttendance(subject.id, 1, 1)}
-                          >
-                            ✓ Present
-                          </button>
-                          <button 
-                            className="btn-mark absent" 
-                            title="Log Bunked Class"
-                            onClick={() => handleLogAttendance(subject.id, 0, 1)}
-                          >
-                            ✗ Bunk
-                          </button>
-                        </div>
-                      </div>
-                    );
-                  })}
+                {/* 1. Core Meta Identifier */}
+                <div className="strip-meta-block">
+                  <span className="strip-code">{subject.code}</span>
+                  <h3 className="strip-title">{subject.name}</h3>
                 </div>
-              </div>
 
-              {/* Attendance Planner Tool */}
-              <div className="planner-deck">
-                <h3>Attendance AI Agent</h3>
-                <p className="planner-desc">
-                  This interface communicates with the agent framework to parse automated logs and keep track of your internal evaluation eligibility criteria.
-                </p>
-                
-                <div className="guidance-box">
-                  <h4>💡 Quick Operations Box</h4>
-                  <p>Click on the <strong>✓ Present</strong> or <strong>✗ Bunk</strong> actions inside any course row to simulate upcoming lectures and preview your eligibility instantly.</p>
-                  <button 
-                    className="reset-btn"
-                    onClick={() => setSubjects(INITIAL_SUBJECTS)}
-                  >
-                    Reset to Default Data
+                {/* 2. Numeric Readouts */}
+                <div className="strip-numeric-block">
+                  <div className="strip-percentage" style={{ color: accent }}>{percentage}%</div>
+                  <div className="strip-raw-counts">{subject.attended} / {subject.total}</div>
+                </div>
+
+                {/* 3. Horizontal Metric Slider Track */}
+                <div className="strip-track-block">
+                  <div className="strip-bar-bg">
+                    <div className="strip-bar-fill" style={{ width: `${Math.min(percentage, 100)}%`, backgroundColor: accent }}></div>
+                    <div className="strip-bar-target" title="75% Regulatory Threshold"></div>
+                  </div>
+                  <div className="strip-prediction-text">
+                    {isDeficit ? (
+                      <span className="deficit-alert">Need <strong>{neededPatches}</strong> upcoming sessions</span>
+                    ) : (
+                      <span className="margin-safe">Can skip <strong>{allowableBunks > 0 ? allowableBunks : 0}</strong> classes safely</span>
+                    )}
+                  </div>
+                </div>
+
+                {/* 4. Instant Calculation Buttons */}
+                <div className="strip-actions-block">
+                  <button className="strip-btn log-present-btn" onClick={() => handleLogAttendance(subject.id, 1, 1)}>
+                    ＋ PRESENT
+                  </button>
+                  <button className="strip-btn log-bunk-btn" onClick={() => handleLogAttendance(subject.id, 0, 1)}>
+                    ✕ BUNK
                   </button>
                 </div>
-              </div>
-            </div>
-          </div>
-        )}
 
-        {activeTab === 'timetable' && (
-          <div className="blank-state">
-            <h3>Class Timetable Module</h3>
-            <p>Integrating daily batch schedules and lecture calendar timings.</p>
-          </div>
-        )}
-      </main>
+              </div>
+            );
+          })}
+        </main>
+
+      </div>
     </div>
   );
 }
