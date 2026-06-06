@@ -35,33 +35,96 @@ function App() {
   if (currentPage === "landing") {
   return (
     <div className="landing-page">
-      <div className="hero-card">
 
-        <h1>🎓 Attendance Guardian AI</h1>
+      <div className="floating-glow glow-1"></div>
+      <div className="floating-glow glow-2"></div>
 
-        <p className="hero-tagline">
-          Never worry about the 75% attendance rule again.
-        </p>
+      <div className="hero-container">
 
-        <div className="feature-list">
-          <p>✅ Live Attendance Tracking</p>
-          <p>✅ Smart Bunk Planner</p>
-          <p>✅ Attendance Prediction</p>
-          <p>✅ AI Attendance Assistant</p>
+        <div className="hero-left">
+
+          <span className="badge">
+            ⚡ AI Powered Attendance Agent
+          </span>
+
+          <h1>
+            ATTENDANCE
+            <br />
+            GUARDIAN AI
+          </h1>
+
+          <p className="hero-subtitle">
+            Track. Predict. Stay Safe.
+          </p>
+
+          <p className="hero-description">
+            An intelligent attendance companion that tracks
+            lectures, predicts shortages, calculates safe bunks,
+            and keeps you above the 75% eligibility threshold.
+          </p>
+
+          <button
+            className="launch-btn"
+            onClick={() => setCurrentPage("dashboard")}
+          >
+            🚀 Launch Mission
+          </button>
+
         </div>
 
-        <button
-          className="launch-btn"
-          onClick={() => setCurrentPage("dashboard")}
-        >
-          Launch Dashboard 🚀
-        </button>
+        <div className="hero-right">
+
+          <div className="bot-card">
+
+            <div className="bot-avatar">
+              🤖
+            </div>
+
+            <h2>AttenBot</h2>
+
+            <p>
+              Welcome Engineer.
+            </p>
+
+            <div className="bot-message">
+              "Your attendance is currently stable.
+              I will help you stay above the danger zone."
+            </div>
+
+          </div>
+
+        </div>
 
       </div>
+
+      <div className="feature-grid">
+
+        <div className="feature-card">
+          <h3>📊 Analytics</h3>
+          <p>
+            Real-time attendance monitoring and insights.
+          </p>
+        </div>
+
+        <div className="feature-card">
+          <h3>🎯 Bunk Planner</h3>
+          <p>
+            Know exactly how many classes you can skip safely.
+          </p>
+        </div>
+
+        <div className="feature-card">
+          <h3>🤖 AI Predictions</h3>
+          <p>
+            Detect attendance shortages before they happen.
+          </p>
+        </div>
+
+      </div>
+
     </div>
   );
 }
-
   return (
     <div className="app-layout">
       {/* Sidebar Section */}
