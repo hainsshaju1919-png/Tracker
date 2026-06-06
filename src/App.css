@@ -356,3 +356,219 @@ body {
 @keyframes scan { 0% { top: 0%; } 50% { top: 100%; } 100% { top: 0%; } }
 @keyframes spinRing { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 @keyframes counterSpin { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
+.dashboard-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 25px;
+}
+
+.dashboard-tabs button {
+  background: rgba(255,255,255,0.05);
+  border: none;
+  color: white;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.active-tab {
+  background: #00d2ff !important;
+  color: black !important;
+}
+
+.timetable-panel {
+  background: rgba(255,255,255,0.04);
+  padding: 30px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.timetable-panel input {
+  margin-top: 20px;
+}
+/* ================= TIMETABLE HOLOGRAPHIC UPLOAD STYLES ================= */
+.timetable-panel {
+  background-color: var(--panel-glass);
+  border: 1px solid var(--border-glass);
+  border-radius: 8px;
+  padding: 30px;
+}
+
+.panel-header-zone {
+  margin-bottom: 24px;
+}
+
+.panel-header-zone h3 {
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: #fff;
+}
+
+.panel-header-zone p {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.upload-dropzone-wrapper {
+  width: 100%;
+}
+
+.holo-dropzone {
+  display: block;
+  position: relative;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px dashed rgba(0, 210, 255, 0.2);
+  border-radius: 6px;
+  padding: 40px 20px;
+  text-align: center;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.2s ease-in-out;
+}
+
+.holo-dropzone:hover {
+  border-color: var(--neon-blue);
+  background: rgba(0, 210, 255, 0.02);
+  box-shadow: inset 0 0 15px rgba(0, 210, 255, 0.05);
+}
+
+.holo-dropzone input[type="file"] {
+  display: none;
+}
+
+.dropzone-interior {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.upload-icon-pulse {
+  font-size: 24px;
+  filter: drop-shadow(0 0 8px rgba(255,255,255,0.1));
+}
+
+.upload-prompt-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.upload-prompt-text .highlight {
+  color: var(--neon-blue);
+}
+
+.sub-prompt {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.sub-prompt-file {
+  font-size: 11px;
+  color: var(--neon-blue);
+  font-family: monospace;
+}
+
+.success-txt {
+  color: var(--neon-green);
+}
+
+/* Animated Scanner Overlay on Dropzone Uploading */
+.holo-dropzone.ingesting {
+  border-color: var(--neon-blue);
+  background: rgba(0, 210, 255, 0.04);
+}
+
+.holo-dropzone.ingesting .scanner-line-pulse {
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--neon-blue), transparent);
+  animation: scan 2s linear infinite;
+}
+
+.processing-loader {
+  color: var(--neon-blue);
+  animation: pulse 1s infinite alternate;
+}
+
+/* File Results Complete Banner Block */
+.file-status-node {
+  margin-top: 20px;
+  background: rgba(46, 213, 115, 0.03);
+  border: 1px solid rgba(46, 213, 115, 0.15);
+  border-radius: 6px;
+  padding: 16px;
+}
+
+.status-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.indicator-dot-green {
+  width: 6px;
+  height: 6px;
+  background-color: var(--neon-green);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--neon-green);
+}
+
+.status-header h4 {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--neon-green);
+  letter-spacing: 0.5px;
+}
+
+.file-status-node p {
+  font-size: 12px;
+  color: #cbd5e1;
+  margin-top: 6px;
+  line-height: 1.5;
+}
+
+/* Tab button fixes */
+.dashboard-tabs {
+  display: flex;
+  gap: 8px;
+}
+
+.dashboard-tabs button {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  color: var(--text-muted);
+  padding: 8px 16px;
+  font-size: 11px;
+  font-weight: bold;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.dashboard-tabs button:hover, 
+.dashboard-tabs button.active-tab {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.15);
+  color: #fff;
+}
+
+.dashboard-tabs button.active-tab {
+  border-bottom: 2px solid var(--neon-blue);
+}
+
+.animate-panel {
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
