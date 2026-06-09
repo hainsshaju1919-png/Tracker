@@ -84,7 +84,7 @@ function App() {
 
   const agent = getAgentStatus();
 
-  // ================= LAYER 1: FUTURISTIC LANDING SCREEN =================
+// LANDING SCREEN
   if (currentPage === 'landing') {
     return (
       <div className="landing-screen">
@@ -95,7 +95,7 @@ function App() {
         <div className="hero-container">
           <div className="hero-left">
             <span className="badge">
-              <span className="pulse-dot"></span> Attendance Guardian Core v2.0
+              <span className="pulse-dot"></span> Attendance Guardian 
             </span>
             <h1>
               ATTENDANCE <br />
@@ -116,8 +116,8 @@ function App() {
             <div className="holo-matrix-deck">
               <div className="matrix-scanner"></div>
               <div className="hud-header">
-                <span className="hud-title">SYSTEM STATUS</span>
-                <span className="hud-ping">SYS_ACTIVE // 200</span>
+                <span className="hud-title">OVERALL STATUS</span>
+                <span className="hud-ping">ACTIVE</span>
               </div>
               <div className="radial-progress-widget">
                 <div className="outer-glow-ring">
@@ -127,7 +127,7 @@ function App() {
               <div className="terminal-log-stream">
                 <div className="log-line"> Linking to CSB Sector database array...</div>
                 <div className="log-line"> Analytical prediction logs: STANDBY</div>
-                <div className="log-line cyan"> Current Status Buffer: [{isSafe ? 'SAFE' : 'SHORTAGE'}]</div>
+                <div className="log-line cyan"> Overall Status Buffer: [{isSafe ? 'SAFE' : 'SHORTAGE'}]</div>
               </div>
             </div>
           </div>
@@ -154,7 +154,7 @@ function App() {
     );
   }
 
-  // ================= LAYER 2: RESTORED MAIN CONSOLE INTERFACE =================
+// RESTORED MAIN CONSOLE INTERFACE 
   return (
     <div className="dashboard-screen">
       <div className="minimal-dash-wrapper">
@@ -162,7 +162,7 @@ function App() {
         <header className="dash-header">
           <div className="dash-brand" onClick={() => setCurrentPage('landing')}>
             <span className="back-arrow">←</span>
-            <h2>GUARDIAN // TERMINAL</h2>
+            <h2>GUARDIAN </h2>
           </div>
           <div className="dash-quick-stats">
             <div className="quick-stat-item">
@@ -194,7 +194,7 @@ function App() {
           <button className="reset-matrix-btn" onClick={handleResetMatrix}>RESET CORE DATA</button>
         </section>
 
-        {/* TRACKING TILES VIEW */}
+  {/*TRACKING VIEW */}
         {activeSection === "dashboard" && (
           <main className="subject-strip-deck">
             {subjects.map((subject) => {
