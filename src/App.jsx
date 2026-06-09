@@ -77,7 +77,7 @@ function App() {
   }, 0);
 
   const getAgentStatus = () => {
-    if (!isSafe) return { color: '#ff4757', status: 'CRITICAL', text: 'Threshold breached. Freeze leaves immediately.' };
+    if (!isSafe) return { color: '#ff4757', status: 'CRITICAL', text: 'DONT TAKE RISK BY BUNKING ONE MORE OF THE SPECIFIED SESSION ' };
     if (totalBunksAvailable === 0) return { color: '#ffa502', status: 'WARNING', text: 'Holding at exact 75% parity. No margin remaining.' };
     return { color: '#00d2ff', status: 'OPTIMAL', text: `Ecosystem stable. Localized buffer supports ${totalBunksAvailable} planned skips.` };
   };
@@ -101,7 +101,7 @@ function App() {
               ATTENDANCE <br />
               <span className="gradient-text">GUARDIAN AI</span>
             </h1>
-            <p className="hero-subtitle">Optimize the Art of the Bunk.</p>
+            <p className="hero-subtitle">"Track, Predict, and Plan Attendance."</p>
             <p className="hero-description">
               An advanced tactical calculation suite designed for engineering parameters. 
               Run immediate simulation tracks, control attendance margins, 
@@ -188,7 +188,7 @@ function App() {
           
           <div className="agent-status-indicator" style={{ backgroundColor: agent.color }}></div>
           <div className="agent-body">
-            <p className="agent-meta-tag"><strong style={{ color: agent.color }}>CORE_AGENT // {agent.status}</strong></p>
+            <p className="agent-meta-tag"><strong style={{ color: agent.color }}>AGENT // {agent.status}</strong></p>
             <p className="agent-advice-text">"{agent.text}"</p>
           </div>
           <button className="reset-matrix-btn" onClick={handleResetMatrix}>RESET CORE DATA</button>
